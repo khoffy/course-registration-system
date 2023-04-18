@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: course-registration-system
+    description: Registration system
+    basedir: ${user.home}/.${spring.application.name}
+  datasource:
+    database: registrationdb
+    hostname: localhost
+    port: 5432
+    username:
+    password:
+    url: jdbc:postgresql://${spring.datasource.hostname}:${spring.datasource.port}/${spring.datasource.database}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: "SELECT 1"
+      max-lifetime: 1800000
+      idle-timeout: 600000
+      leak-detection-threshold: 60000
+  initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+#  activemq:
+#    broker-url: tcp://localhost:61616
+#    user: admin
+#    password: admin
+
+server:
+  port: 8081
+  tomcat:
+    basedir: ${spring.application.basedir}/tomcat
+    accesslog:
+      enabled: true
+      directory: "logs"
+      buffered: false
+      suffix: .json
+      rotate: true
+      max-days: 3
+      rename-on-rotate: true
+      pattern: '{"clientIp":"%h","user":"%l","username":"%u","time":"%{yyyy-MM-dd''T''HH:mm:ss.SSS''Z''}t","urlPath":"%U","duration":"%D","method":"%m","request":"%r","status":"%s","responseSize":"%b","trace":"%{X-B3-TraceId}i","span":"%{X-B3-SpanId}i"}'
+
+#logging:
+#  config: file:${spring.application.basedir}/conf/logback-spring.xml
+#  file:
+#    path: ${spring.application.basedir}/logs
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
